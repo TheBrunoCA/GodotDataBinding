@@ -12,8 +12,8 @@ func _init(source_obj: Object
 		, destiny_obj: Object
 		, source_prop: StringName
 		, destiny_prop: StringName
-		, _source_signal: StringName
-		, _destiny_signal: StringName) -> void:
+		, _source_signal: StringName = "property_changed"
+		, _destiny_signal: StringName = "") -> void:
 
 	source_object = source_obj
 	destiny_object = destiny_obj
