@@ -25,24 +25,22 @@ func remove_bind(bind: Bind) -> void:
 	#assert(bind.destiny_object.get_property_list().has(bind.destity_property), "destiny object must have the "+bind.destity_property+" property")
 
 func _connect_signals(bind: Bind) -> void:
-	bind.source_object.connect(bind.source_signal, _source_signal_emitted.bind(bind))
-	if not bind.destiny_signal.is_empty():
-		bind.destiny_object.connect(bind.destiny_signal, _destiny_signal_emitted.bind(bind))
+	bind.source_signal_emited.connect(_source_signal_emitted.bind(bind))
+	bind.destiny_signal_emited.connect(_destiny_signal_emitted.bind(bind))
 
 func _disconnect_signals(bind: Bind) -> void:
-	bind.source_object.disconnect(bind.source_signal, _source_signal_emitted)
-	if not bind.destiny_signal.is_empty():
-		bind.destiny_object.disconnect(bind.destiny_signal, _destiny_signal_emitted)
+	bind.source_signal_emited.disconnect(_source_signal_emitted)
+	bind.destiny_signal_emited.disconnect(_destiny_signal_emitted)
 
 func _source_signal_emitted(bind: Bind) -> void:
-	bind.destiny_object.set_block_signals(true)
+	_disconnect_signals(bind)
 	bind.destiny_object.set(bind.destity_property, bind.source_object.get(bind.source_property))
-	bind.destiny_object.set_block_signals(false)
+	_connect_signals(bind)
 
 func _destiny_signal_emitted(bind: Bind) -> void:
-	bind.source_object.set_block_signals(true)
+	_disconnect_signals(bind)
 	bind.source_object.set(bind.source_property, bind.destiny_object.get(bind.destity_property))
-	bind.source_object.set_block_signals(false)
+	_connect_signals(bind)
 
 func get_binds_from_source_obj(obj: Object) -> Array[Bind]:
 	var result: Array[Bind]
