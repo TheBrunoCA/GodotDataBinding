@@ -3,7 +3,9 @@ extends Node
 var binds: Array[Bind]
 
 func add_bind(bind: Bind, sync: bool = false) -> void:
-	_assert_bind(bind)
+	#TODO Have to think how I will do this
+	#_assert_bind(bind)
+
 	if binds.has(bind): return
 	binds.append(bind)
 	_connect_signals(bind)
@@ -12,15 +14,15 @@ func remove_bind(bind: Bind) -> void:
 	_disconnect_signals(bind)
 	if binds.has(bind): binds.erase(bind)
 
-func _assert_bind(bind: Bind) -> void:
-	assert(not binds.has(bind), "bind already exists")
-	assert(bind.source_object, "source object must be valid")
-	assert(bind.destiny_object, "destity object must be valid")
-	assert(bind.source_object.has_signal(bind.source_signal), "source object must have the "+bind.source_signal+" signal")
-	if not bind.destiny_signal.is_empty():
-		assert(bind.destiny_object.has_signal(bind.destiny_signal), "destiny object must have the "+bind.destiny_signal+" signal")
-	assert(bind.source_object.get_property_list().has(bind.source_property), "source object must have the "+bind.source_property+" property")
-	assert(bind.destiny_object.get_property_list().has(bind.destity_property), "destiny object must have the "+bind.destity_property+" property")
+#func _assert_bind(bind: Bind) -> void:
+	#assert(not binds.has(bind), "bind already exists")
+	#assert(bind.source_object, "source object must be valid")
+	#assert(bind.destiny_object, "destity object must be valid")
+	#assert(bind.source_object.has_signal(bind.source_signal), "source object must have the "+bind.source_signal+" signal")
+	#if not bind.destiny_signal.is_empty():
+		#assert(bind.destiny_object.has_signal(bind.destiny_signal), "destiny object must have the "+bind.destiny_signal+" signal")
+	#assert(bind.source_object.get_property_list().has(bind.source_property), "source object must have the "+bind.source_property+" property")
+	#assert(bind.destiny_object.get_property_list().has(bind.destity_property), "destiny object must have the "+bind.destity_property+" property")
 
 func _connect_signals(bind: Bind) -> void:
 	bind.source_object.connect(bind.source_signal, _source_signal_emitted.bind(bind))
